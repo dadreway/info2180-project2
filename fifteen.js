@@ -2,6 +2,7 @@
 var div;
 var x;
 var y;
+var fval; //used for flashing background when user completes puzzle
 
 window.onload = function () //populates browser window with elements
 {
@@ -10,8 +11,8 @@ window.onload = function () //populates browser window with elements
 
 	for (var i=0; i<div.length; i++)
 	{
-		div[i].className = "puzzlepiece";
-		//$(div[i]).addClass('puzzlepiece');
+		//div[i].className = "puzzlepiece";
+		$(div[i]).addClass('puzzlepiece');
 		div[i].style.left = (i%4*100)+'px';
 		div[i].style.top =(parseInt(i/4)*100)+'px';
 		div[i].style.backgroundPosition = '-' + div[i].style.left + ' ' + '-' + div[i].style.top;
@@ -28,8 +29,9 @@ window.onload = function () //populates browser window with elements
 
 		div[i].onmouseout = function()
 		{
-			this.style.border = "2px solid black";
-			this.style.color = "#000000";
+			$(this).removeClass('movablepiece')
+			//this.style.border = "2px solid black";
+			//this.style.color = "#000000";
 		};
 
 		div[i].onclick = function()
@@ -40,6 +42,7 @@ window.onload = function () //populates browser window with elements
 				if (checkfinish())
 				{
 					winner();
+					alert("you win!")
 				}
 				return;
 			}
@@ -97,25 +100,25 @@ window.onload = function () //populates browser window with elements
 
 function checkmove(pos)
 {
-	if (calculateleft(x,y)==(pos-1))//remember to check if == 1 in onload
+	if (calculateleft(x,y)==(pos-1))
 	{
 		return 1;
 
 	}
 
-	if (calculateright(x,y)==(pos-1))//remember to check if == 1 in onload
+	if (calculateright(x,y)==(pos-1))
 	{
 		return 1;
 
 	}
 
-	if (calculatetop(x,y)==(pos-1))//remember to check if == 1 in onload
+	if (calculatetop(x,y)==(pos-1))
 	{
 		return 1;
 
 	}
 
-	if (calculatebottom(x,y)==(pos-1))//remember to check if == 1 in onload
+	if (calculatebottom(x,y)==(pos-1))
 	{
 		return 1;
 
@@ -228,15 +231,23 @@ function checkfinish(){
 	return token;
 }
 
-function winner (){
-	var body = document.getElementsByTagName('body');
-	body[0].style.backgroundColor = "#FF0000";
+//function winner (){
+	//var body = document.getElementsByTagName('body');
+	//body[0].style.backgroundColor = "#FF0000";
+	//winflash();
+//}
+
+function winner() {
+	setInterval(winflash, 1000);
 }
 
 function winflash (){
 	var body = document.getElementsByTagName('body');
-	for (var i = 0; i < 10; i++) {
-		body[0].style.backgroundColor = "#006600";
-		body[0].style.backgroundColor = "#FF0000";
+	if (fval == 1){
+		body[0].style.backgroundColor = "red";
+		fval = 2;
+	} else {
+		body[0].style.backgroundColor = "green"
+		fval = 1;
 	}
 }
