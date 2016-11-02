@@ -3,23 +3,26 @@ var div;
 var x;
 var y;
 
-window.onload = function()//populates browser window with elements
+window.onload = function () //populates browser window with elements
 {
 	var puzzle = document.getElementById('puzzlearea');
-	div = puzzle.getElementByTagName('div');
+	div = puzzle.getElementsByTagName("div");
 
 	for (var i=0; i<div.length; i++)
 	{
 		div[i].className = "puzzlepiece";
+		//$(div[i]).addClass('puzzlepiece');
 		div[i].style.left = (i%4*100)+'px';
 		div[i].style.top =(parseInt(i/4)*100)+'px';
 		div[i].style.backgroundPosition = '-' + div[i].style.left + ' ' + '-' + div[i].style.top;
 		div[i].onmouseover = function()
 		{
-			if (checkmove(parseInt(this.innerHTML)) == 1)
+			if (checkmove(parseInt(this.innerHTML)) == 1)//when net comes back, add jquery apply.
 			{
-				this.style.border = "2px solid red";
-				this.style.color = "#006600";
+				$(this).addClass('movablepiece');
+				//this.style.border = "2px solid red";
+				//this.style.color = "#006600";
+
 			}
 		};
 
@@ -63,7 +66,7 @@ window.onload = function()//populates browser window with elements
 			}
 			if (randomgenstore == 1)
 			{
-				var temp = calculatebottom(x,z);
+				var temp = calculatebottom(x,y);
 				if ( temp != -1) 
 				{
 					slidetile(temp);
@@ -72,7 +75,7 @@ window.onload = function()//populates browser window with elements
 
 			if (randomgenstore == 2)
 			{
-				var temp = calculateleft(x,z);
+				var temp = calculateleft(x,y);
 				if ( temp != -1)
 				{
 					slidetile(temp);
@@ -81,7 +84,7 @@ window.onload = function()//populates browser window with elements
 
 			if (randomgenstore == 3)
 			{
-				var temp = calculateright(x,z);
+				var temp = calculateright(x,y);
 				if (temp != -1)
 				{
 					slidetile(temp);
@@ -148,7 +151,10 @@ function calculateleft(x,y)
 	{
 		for (var i = 0; i < div.length; i++) 
 		{
-			return i;
+			if (parseInt(div[i].style.left) + 100 == xval&& parseInt(div[i].style.top) == yval)
+			{
+				return i;
+			}
 		}
 	}
 	else
@@ -183,9 +189,12 @@ function calculateright(x,y)
 
 	if (xval <300 ) 
 	{
-		if (parseInt(div[i].style.left) - 100 == xval && parseInt(div[i].style.top)) 
-		{
-			return i;
+		for (var i=0; i < div.length; i++) {
+		
+			if (parseInt(div[i].style.left) - 100 == xval && parseInt(div[i].style.top) == yval) 
+			{
+				return i;
+			}
 		}
 	}
 	else
@@ -222,4 +231,12 @@ function checkfinish(){
 function winner (){
 	var body = document.getElementsByTagName('body');
 	body[0].style.backgroundColor = "#FF0000";
+}
+
+function winflash (){
+	var body = document.getElementsByTagName('body');
+	for (var i = 0; i < 10; i++) {
+		body[0].style.backgroundColor = "#006600";
+		body[0].style.backgroundColor = "#FF0000";
+	}
 }
