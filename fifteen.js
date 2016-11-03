@@ -1,4 +1,13 @@
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Extra features done                                                                                                          ///
+//End of Game notification - screen flashes and updates text on screen to tell user that they have sucessfully solved the puzzle///
+//                                                                                                                              ///
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
 "use strict";
+
 var div;
 var x;
 var y;
@@ -10,7 +19,7 @@ window.onload = function () //populates browser window with elements
 	var puzzle = document.getElementById('puzzlearea');
 	div = puzzle.getElementsByTagName("div");
 
-	alert("the puzzle will auto shuffle 3 seconds after you close this window.");// informing the user that the game will auto shuffle.
+	//alert("the puzzle will auto shuffle 3 seconds after you close this window.");// informing the user that the game will auto shuffle.
 
 	for (var i=0; i<div.length; i++)
 	{
@@ -18,8 +27,8 @@ window.onload = function () //populates browser window with elements
 		div[i].style.left = (i%4*100)+'px';
 		div[i].style.top =(parseInt(i/4)*100)+'px';
 		div[i].style.backgroundPosition = '-' + div[i].style.left + ' ' + '-' + div[i].style.top;
-		
-		setTimeout(shuffle,3000);// runs the shuffle function to set up the gaem board.
+
+		//setTimeout(shuffle,3000);// runs the shuffle function to set up the gaem board.
 
 		div[i].onmouseover = function()//used to highlight movable pieces.
 		{
@@ -42,6 +51,7 @@ window.onload = function () //populates browser window with elements
 				slidetile(this.innerHTML-1);
 				if (checkfinish())
 				{
+					splashupdate();
 					winner();
 					
 				}
@@ -236,9 +246,13 @@ function checkfinish(){ //checks to see if the puzzle has been solved.
 }
 
 function winner() { //uses set interval to change the background colour of the body, every 1000 milliseconds
-	setInterval(winflash, 1000);	
-}
+	setInterval(winflash, 1000);
+};
 
+function splashupdate(){
+	var b = document.getElementsByTagName("h1");
+	b[0].innerHTML = "YOU WIN!!!!! REFRESH PAGE TO PLAY AGAIN";
+};
 
 function winflash (){ //fucntion used to change the background colour when user solves the puzzle.
 	var body = document.getElementsByTagName('body');
