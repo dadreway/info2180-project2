@@ -3,7 +3,8 @@
 //End of Game notification - screen flashes and updates text on screen to tell user that they have sucessfully solved the puzzle///
 //                                                                                                                              ///
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+//Student id: 620088048                                                                                                         ///
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 "use strict";
@@ -19,7 +20,7 @@ window.onload = function () //populates browser window with elements
 	var puzzle = document.getElementById('puzzlearea');
 	div = puzzle.getElementsByTagName("div");
 
-	//alert("the puzzle will auto shuffle 3 seconds after you close this window.");// informing the user that the game will auto shuffle.
+	alert("the puzzle will auto shuffle 3 seconds after you close this window.");// informing the user that the game will auto shuffle.
 
 	for (var i=0; i<div.length; i++)
 	{
@@ -28,7 +29,7 @@ window.onload = function () //populates browser window with elements
 		div[i].style.top =(parseInt(i/4)*100)+'px';
 		div[i].style.backgroundPosition = '-' + div[i].style.left + ' ' + '-' + div[i].style.top;
 
-		//setTimeout(shuffle,3000);// runs the shuffle function to set up the gaem board.
+		setTimeout(shuffle,3000);// runs the shuffle function to set up the gaem board.
 
 		div[i].onmouseover = function()//used to highlight movable pieces.
 		{
