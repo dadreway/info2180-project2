@@ -6,35 +6,36 @@ var fval; //used for flashing background when user completes puzzle
 
 window.onload = function () //populates browser window with elements
 {
+	var shufflebutton = document.getElementById('shufflebutton');
 	var puzzle = document.getElementById('puzzlearea');
 	div = puzzle.getElementsByTagName("div");
 
+	alert("the puzzle will auto shuffle 3 seconds after you close this window.");// informing the user that the game will auto shuffle.
+
 	for (var i=0; i<div.length; i++)
 	{
-		//div[i].className = "puzzlepiece";
 		$(div[i]).addClass('puzzlepiece');
 		div[i].style.left = (i%4*100)+'px';
 		div[i].style.top =(parseInt(i/4)*100)+'px';
 		div[i].style.backgroundPosition = '-' + div[i].style.left + ' ' + '-' + div[i].style.top;
-		div[i].onmouseover = function()
+		
+		setTimeout(shuffle,3000);// runs the shuffle function to set up the gaem board.
+
+		div[i].onmouseover = function()//used to highlight movable pieces.
 		{
-			if (checkmove(parseInt(this.innerHTML)) == 1)//when net comes back, add jquery apply.
+			if (checkmove(parseInt(this.innerHTML)) == 1)//checks to see if tile is movable.
 			{
-				$(this).addClass('movablepiece');
-				//this.style.border = "2px solid red";
-				//this.style.color = "#006600";
+				$(this).addClass('movablepiece');//applies properties from 'movablepiece' in .css to tile.
 
 			}
 		};
 
-		div[i].onmouseout = function()
+		div[i].onmouseout = function()// if tile is movable but the user navigates away from it. the properies added to it are removed.
 		{
-			$(this).removeClass('movablepiece')
-			//this.style.border = "2px solid black";
-			//this.style.color = "#000000";
+			$(this).removeClass('movablepiece');
 		};
 
-		div[i].onclick = function()
+		div[i].onclick = function()// checks to see if tile can be moved and moves it. upon recieving the 'click' event
 		{
 			if (checkmove(parseInt(this.innerHTML))== 1)
 			{
@@ -42,7 +43,7 @@ window.onload = function () //populates browser window with elements
 				if (checkfinish())
 				{
 					winner();
-					alert("you win!")
+					
 				}
 				return;
 			}
@@ -52,11 +53,13 @@ window.onload = function () //populates browser window with elements
 	x = '300px';
 	y = '300px';
 
-	var shufflebutton = document.getElementById('shufflebutton');
-	shufflebutton.onclick = function()
-	{
+	shufflebutton.onclick = shuffle; //allows user to suffle the tiles when they click on the shuffle button
+	
 
-		for (var i=0; i<250; i++)
+};
+
+function shuffle(){ //function to shuffle the tiles.
+	for (var i=0; i<250; i++)
 		{
 			var randomgenstore = parseInt(Math.random()* 100) %4;
 			if (randomgenstore == 0)
@@ -94,10 +97,11 @@ window.onload = function () //populates browser window with elements
 				}
 			}
 		}
-	};
 
 };
 
+// this function checks all the posible movements for a tile, up, down,lef or right, then returns a 1.
+//the result from this fucntion  is used by the .onclick in the window.onload to move the tile 
 function checkmove(pos)
 {
 	if (calculateleft(x,y)==(pos-1))
@@ -205,7 +209,7 @@ function calculateright(x,y)
 		return -1;
 	}
 };
-
+// this function is used to 'swap' the tiles.
 function slidetile(pos){
 	var tempstore = div[pos].style.top;
 	div[pos].style.top = y;
@@ -216,7 +220,7 @@ function slidetile(pos){
 	x = tempstore;
 }
 
-function checkfinish(){
+function checkfinish(){ //checks to see if the puzzle has been solved.
 	var token = true;
 	for (var i = 0; i < div.length; i++) {
 		var y = parseInt(div[i].style.top);
@@ -231,17 +235,12 @@ function checkfinish(){
 	return token;
 }
 
-//function winner (){
-	//var body = document.getElementsByTagName('body');
-	//body[0].style.backgroundColor = "#FF0000";
-	//winflash();
-//}
-
-function winner() {
-	setInterval(winflash, 1000);
+function winner() { //uses set interval to change the background colour of the body, every 1000 milliseconds
+	setInterval(winflash, 1000);	
 }
 
-function winflash (){
+
+function winflash (){ //fucntion used to change the background colour when user solves the puzzle.
 	var body = document.getElementsByTagName('body');
 	if (fval == 1){
 		body[0].style.backgroundColor = "red";
@@ -251,3 +250,4 @@ function winflash (){
 		fval = 1;
 	}
 }
+
